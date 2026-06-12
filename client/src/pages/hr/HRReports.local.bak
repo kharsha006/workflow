@@ -1,0 +1,68 @@
+import React from 'react';
+
+const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];
+const ATT = [88, 91, 85, 92, 89, 87];
+const PROD = [75, 80, 72, 88, 82, 84];
+const MAX = 95;
+
+const BarChart = ({ values, lastColor, restColor }) => (
+  <>
+    <div style={{ display: 'flex', alignItems: 'flex-end', gap: '6px', height: '80px' }}>
+      {values.map((v, i) => (
+        <div key={i} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '3px' }}>
+          <div style={{ fontSize: '10px', fontWeight: 600, color: '#374151' }}>{v}%</div>
+          <div style={{ width: '100%', height: Math.round((v / MAX) * 72) + 4 + 'px', background: i === values.length - 1 ? lastColor : restColor, borderRadius: '4px 4px 0 0' }}></div>
+        </div>
+      ))}
+    </div>
+    <div style={{ display: 'flex', gap: '6px', marginTop: '4px' }}>
+      {MONTHS.map((m) => <div key={m} style={{ flex: 1, textAlign: 'center', fontSize: '10px', color: '#9CA3AF' }}>{m}</div>)}
+    </div>
+  </>
+);
+
+const HRReports = () => (
+  <div className="hr-view active">
+    <div style={{ marginBottom: '16px' }}>
+      <div style={{ fontFamily: "'Plus Jakarta Sans',sans-serif", fontSize: '18px', fontWeight: 700 }}>Reports & Analytics</div>
+      <div style={{ fontSize: '12px', color: '#6B7280' }}>Attendance, leave, payroll and productivity insights</div>
+    </div>
+
+    <div className="bento-grid">
+      <div className="bento-card b-3">
+        <div className="bento-accent" style={{ background: '#4F46E5' }}></div>
+        <div style={{ fontSize: '11px', fontWeight: 600, color: '#6B7280', marginBottom: '10px' }}><i className="fas fa-calendar-check" style={{ color: '#4F46E5', marginRight: '4px' }}></i>Attendance Rate · Last 6 months</div>
+        <BarChart values={ATT} lastColor="#4F46E5" restColor="#C7D2FE" />
+      </div>
+
+      <div className="bento-card b-3">
+        <div className="bento-accent" style={{ background: '#EC4899' }}></div>
+        <div style={{ fontSize: '11px', fontWeight: 600, color: '#6B7280', marginBottom: '10px' }}><i className="fas fa-umbrella-beach" style={{ color: '#EC4899', marginRight: '4px' }}></i>Leave Statistics · 2026</div>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
+          {[['38', 'Sick leaves', '#FEF3C7', '#92400E'], ['62', 'Annual leaves', '#DBEAFE', '#1E40AF'], ['24', 'Personal leaves', '#D1FAE5', '#065F46'], ['124', 'Total days taken', '#EDE9FE', '#5B21B6']].map(([v, l, bg, c]) => (
+            <div key={l} className="bento-card" style={{ padding: '10px', background: bg }}><div style={{ fontSize: '18px', fontWeight: 800, color: c }}>{v}</div><div style={{ fontSize: '10px', color: c }}>{l}</div></div>
+          ))}
+        </div>
+      </div>
+
+      <div className="bento-card b-3" style={{ background: 'linear-gradient(135deg,#1E1E2E,#1E3A5F)', border: 'none' }}>
+        <div style={{ fontSize: '11px', fontWeight: 600, color: 'rgba(255,255,255,0.5)', marginBottom: '10px' }}><i className="fas fa-money-bill-wave" style={{ marginRight: '4px' }}></i>Payroll Summary · 2026</div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px' }}><span style={{ color: 'rgba(255,255,255,0.5)' }}>Jan–Mar</span><span style={{ color: '#fff', fontWeight: 600 }}>₹1.38 Cr</span></div>
+          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px' }}><span style={{ color: 'rgba(255,255,255,0.5)' }}>Apr–Jun</span><span style={{ color: '#fff', fontWeight: 600 }}>₹1.45 Cr</span></div>
+          <div style={{ height: '1px', background: 'rgba(255,255,255,0.08)' }}></div>
+          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px' }}><span style={{ color: 'rgba(255,255,255,0.5)' }}>YTD Total</span><span style={{ color: '#10B981', fontWeight: 700 }}>₹2.83 Cr</span></div>
+          <div style={{ fontSize: '10px', color: 'rgba(255,255,255,0.3)' }}>+6.2% vs 2025</div>
+        </div>
+      </div>
+
+      <div className="bento-card b-5">
+        <div className="bento-accent" style={{ background: '#F97316' }}></div>
+        <div style={{ fontSize: '11px', fontWeight: 600, color: '#6B7280', marginBottom: '10px' }}><i className="fas fa-gauge-high" style={{ color: '#F97316', marginRight: '4px' }}></i>Productivity Insights</div>
+        <BarChart values={PROD} lastColor="#F97316" restColor="#FED7AA" />
+      </div>
+    </div>
+  </div>
+);
+
+export default HRReports;
