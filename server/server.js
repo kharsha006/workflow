@@ -10,13 +10,11 @@ const setupCronJobs = require('./utils/cronJobs');
 // Load env vars
 dotenv.config();
 
-// Connect to database and seed if memory DB
+// Connect to database and seed
 connectDB().then(async (isMemory) => {
-  if (isMemory) {
-    console.log('Seeding memory database...');
-    const seedData = require('./utils/seedData');
-    await seedData(true); // skipConnect = true
-  }
+  console.log('Seeding database...');
+  const seedData = require('./utils/seedData');
+  await seedData(true); // skipConnect = true
 });
 
 // Initialize Cron Jobs
