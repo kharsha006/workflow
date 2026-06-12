@@ -5,6 +5,7 @@ import { useToast } from '../../hooks/useToast';
 import Avatar from '../../components/common/Avatar';
 import Badge from '../../components/common/Badge';
 import Button from '../../components/common/Button';
+import UserDetailsModal from '../../components/modals/UserDetailsModal';
 
 const HROverview = () => {
   const { addToast } = useToast();
@@ -16,6 +17,7 @@ const HROverview = () => {
   const [upcomingEvents, setUpcomingEvents] = useState([]);
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [selectedUser, setSelectedUser] = useState(null);
 
   useEffect(() => {
     fetchAll();
@@ -86,6 +88,7 @@ const HROverview = () => {
     try {
       await api.put(`/api/users/${id}/${action}`);
       addToast(`User registration ${action}d`, 'success');
+      setSelectedUser(null);
       fetchAll();
     } catch (err) {
       addToast(err.response?.data?.message || `Failed to ${action} user`, 'error');
@@ -204,8 +207,7 @@ const HROverview = () => {
                   </div>
                 </div>
                 <div style={{ display: 'flex', gap: '6px' }}>
-                  <button className="btn btn-success" style={{ padding: '4px 10px', fontSize: '11px' }} onClick={() => handleUserAction(u._id, 'approve')}>Approve</button>
-                  <button className="btn btn-danger" style={{ padding: '4px 10px', fontSize: '11px' }} onClick={() => handleUserAction(u._id, 'reject')}>Reject</button>
+                  <Button variant="ghost" size="sm" onClick={() => setSelectedUser(u)}>View Details</Button>
                 </div>
               </div>
             ))
@@ -311,6 +313,14 @@ const HROverview = () => {
         </div>
 
       </div>
+
+      <UserDetailsModal 
+        isOpen={!!selectedUser} 
+        onClose={() => setSelectedUser(null)} 
+        user={selectedUser}
+        onApprove={(id) => handleUserAction(id, 'approve')}
+        onReject={(id) => handleUserAction(id, 'reject')}
+      />
     </div>
   );
 };

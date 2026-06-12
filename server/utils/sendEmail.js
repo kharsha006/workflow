@@ -1,8 +1,15 @@
 const nodemailer = require('nodemailer');
 
 const sendEmail = async (options) => {
-  // Use Ethereal Mail for testing since we don't have a real SMTP set up yet
-  // This captures outgoing emails safely and provides a viewing URL
+  if (process.env.NODE_ENV === 'production') {
+    console.log('--- MOCK EMAIL SENT ---');
+    console.log('To:', options.to);
+    console.log('Subject:', options.subject);
+    console.log('-----------------------');
+    return;
+  }
+
+  // Use Ethereal Mail for local testing
   let testAccount = await nodemailer.createTestAccount();
 
   const transporter = nodemailer.createTransport({
